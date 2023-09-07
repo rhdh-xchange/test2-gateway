@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: test2-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: test2-poi-gateway-app-dev
+    backstage.io/kubernetes-id: test2-poi-gateway-app
+    backstage.io/kubernetes-namespace: test2
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-xchange/test2-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa-cvtl6.9nln.p1.openshiftapps.com/dev-pipelines/ns/test2/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa-cvtl6.9nln.p1.openshiftapps.com/k8s/ns/test2/deployments/test2-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa-cvtl6.9nln.p1.openshiftapps.com/#https://github.com/rhdh-xchange/test2-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/ryanj"
+  system: workshop-system-test2
+  providesApis:
+    - gateway-api-test2
+  consumesApis:
+    - backend-api-test2
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-test2
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/ryanj"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-test2
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://test2-poi-gateway-app-test2.apps.rosa-cvtl6.9nln.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-xchange/test2-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/ryanj"
+  system: workshop-system-test2
+  definition:
+    $text: https://github.com/rhdh-xchange/test2-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
